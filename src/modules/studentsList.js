@@ -15,11 +15,9 @@ export const displayNewElement = (student, scoreboard) => {
 
   studentsList.appendChild(studentDiv);
 
-    if (scoreboard.students.length === 0) {
-      studentsList.innerHTML = `
+  if (scoreboard.students.length === 0) {
+    studentsList.innerHTML = `
         <p class="empty-scoreboard">No Score Yet.</p>
       `;
-    }
+  }
 };
-
-

@@ -34,7 +34,6 @@ export default class Scoreboard {
     return null;
   }
 
-
   updateLocalStorage() {
     // Updates the Local Storage
     if (storageAvailable('localStorage')) {

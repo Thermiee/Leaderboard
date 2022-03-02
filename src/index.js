@@ -1,4 +1,4 @@
-import './index.css'
+import './index.css';
 import Scoreboard from './modules/scoreboard.js';
 import Student from './modules/student.js';
 import {
