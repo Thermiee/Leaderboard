@@ -8,7 +8,7 @@
 
 ## Live Demo
 
-https://thermiee.github.io/LeaderBoard/
+https://thermiee.github.io/Leaderboard/
 
 ## Built With
 - HTML
