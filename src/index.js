@@ -1,20 +1,37 @@
-import _ from 'lodash';
-import printMe from './print.js';
-import './style.css';
+import './index.css'
+import Scoreboard from './modules/scoreboard.js';
+import Student from './modules/student.js';
+import {
+  displayNewElement,
+  studentsList,
+} from './modules/studentsList.js';
 
-function component() {
-  const element = document.createElement('div');
-  const btn = document.createElement('button');
+const scoreboard = new Scoreboard();
 
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-  element.classList.add('hello');
-
-  btn.innerHTML = 'Click me and check the console!';
-  btn.onclick = printMe;
-
-  element.appendChild(btn);
-
-  return element;
+// Display all students when the page is loaded
+if (scoreboard.students.length === 0) {
+  studentsList.innerHTML = `
+        <p class="empty-scoreboard">No Score Yet.</p>
+      `;
+} else {
+  scoreboard.students.forEach((student) => {
+    displayNewElement(student, scoreboard);
+  });
 }
 
-document.body.appendChild(component());
+// Add Event Listener on Add student button
+const addStudentForm = document.getElementById('add-student-form');
+addStudentForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (scoreboard.students.length === 0) {
+    studentsList.innerHTML = '';
+  }
+  const result = scoreboard.addStudent(
+    new Student(addStudentForm.elements.title.value, addStudentForm.elements.score.value),
+  );
+  if (result) {
+    displayNewElement(result, scoreboard);
+  }
+  addStudentForm.elements.title.value = '';
+  addStudentForm.elements.score.value = '';
+});
