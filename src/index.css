@@ -74,7 +74,6 @@ input#refresh-score:hover {
   overflow-y: scroll;
 }
 
-
 #add-student-form {
   display: flex;
   flex-direction: column;
