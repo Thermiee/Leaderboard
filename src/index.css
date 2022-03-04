@@ -60,29 +60,7 @@ input#refresh-score {
 }
 
 input#refresh-score:hover {
-  transform: scale(1.05);
-}
-
-.student {
-  padding: 0 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.student:nth-child(2n+1) {
-  background-color: #ddd;
-}
-
-.student-title,
-.student-author,
-.remove-button {
-  margin: 8px;
-}
-
-.student-author,
-.student-title {
-  font-size: 1.2rem;
-  font-weight: normal;
+  transform: scale(1.2);
 }
 
 #students-list {
@@ -96,11 +74,6 @@ input#refresh-score:hover {
   overflow-y: scroll;
 }
 
-.student-store {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-}
 
 #add-student-form {
   display: flex;
@@ -116,10 +89,6 @@ input#refresh-score:hover {
 
 #input-form {
   min-height: 200px;
-}
-
-.empty-scoreboard {
-  margin: auto;
 }
 
 #input-form input[type="text"] {
@@ -151,7 +120,7 @@ input#refresh-score:hover {
 }
 
 #input-form input[type="submit"]:hover {
-  transform: scale(1.05);
+  transform: scale(1.2);
 }
 
 footer {
