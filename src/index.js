@@ -1,12 +1,12 @@
 import './index.css';
 import Trenches from './modules/trenches.js';
 import Student from './modules/student.js';
-import TrenchesAPI from './modules/api';
+import TrenchesAPI from './modules/api.js';
 
 const trenches = new Trenches();
 
 const addRecentStudent = (trenches, {
-  title, score
+  title, score,
 }) => {
   const studentsList = document.getElementById('students-list');
 
@@ -26,7 +26,7 @@ const addRecentStudent = (trenches, {
 const studentListener = async (trenches) => {
   const studentForm = document.getElementById('add-student-form');
   const newScore = new Student(studentForm.elements.title.value, studentForm.elements.score.value);
- const isAPI = await TrenchesAPI.addNewScore(trenches.gameID, {
+  const isAPI = await TrenchesAPI.addNewScore(trenches.gameID, {
     user: newScore.title,
     score: newScore.score,
   });
@@ -71,7 +71,6 @@ const refreshButtonEventListener = async (trenches) => {
     `;
   }
 };
-
 
 document.getElementById('students-list').innerHTML = `
   <p class="inner-text">No Scores Yet.</p>
