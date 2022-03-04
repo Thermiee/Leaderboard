@@ -1,5 +1,4 @@
 export default class Student {
- 
     title;
 
     score;
