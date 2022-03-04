@@ -1,37 +1,88 @@
 import './index.css';
-import Scoreboard from './modules/scoreboard.js';
+import Trenches from './modules/trenches.js';
 import Student from './modules/student.js';
-import {
-  displayNewElement,
-  studentsList,
-} from './modules/studentsList.js';
+import TrenchesAPI from './modules/api';
 
-const scoreboard = new Scoreboard();
+const trenches = new Trenches();
 
-// Display all students when the page is loaded
-if (scoreboard.students.length === 0) {
-  studentsList.innerHTML = `
-        <p class="empty-scoreboard">No Score Yet.</p>
-      `;
-} else {
-  scoreboard.students.forEach((student) => {
-    displayNewElement(student, scoreboard);
-  });
-}
+const addRecentStudent = (trenches, {
+  title, score
+}) => {
+  const studentsList = document.getElementById('students-list');
 
-// Add Event Listener on Add student button
-const addStudentForm = document.getElementById('add-student-form');
-addStudentForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  if (scoreboard.students.length === 0) {
+  const newStudentsList = document.createElement('li');
+  newStudentsList.innerHTML = `
+    <p>${title}: ${score}</p>
+  `;
+
+  if (trenches.scores.length === 0) {
     studentsList.innerHTML = '';
   }
-  const result = scoreboard.addStudent(
-    new Student(addStudentForm.elements.title.value, addStudentForm.elements.score.value),
-  );
-  if (result) {
-    displayNewElement(result, scoreboard);
+
+  studentsList.appendChild(newStudentsList);
+  trenches.addNewScore(new Student(title, score));
+};
+
+const studentListener = async (trenches) => {
+  const studentForm = document.getElementById('add-student-form');
+  const newScore = new Student(studentForm.elements.title.value, studentForm.elements.score.value);
+ const isAPI = await TrenchesAPI.addNewScore(trenches.gameID, {
+    user: newScore.title,
+    score: newScore.score,
+  });
+  if (isAPI === null) {
+    return;
   }
-  addStudentForm.elements.title.value = '';
-  addStudentForm.elements.score.value = '';
+
+  addRecentStudent(trenches, {
+    title: newScore.title,
+    score: newScore.score,
+  });
+
+  studentForm.reset();
+};
+
+const refreshButtonEventListener = async (trenches) => {
+  const studentsList = document.getElementById('students-list');
+  studentsList.innerHTML = `
+    <p class="inner-text">Hold on Refresh in progress...</p>
+  `;
+
+  const data = await TrenchesAPI.getScores(trenches.gameID);
+  if (data === null) {
+    return;
+  }
+
+  data.sort((a, b) => b.score - a.score);
+
+  trenches.clearArray();
+  studentsList.innerHTML = '';
+
+  data.forEach((score) => {
+    addRecentStudent(trenches, {
+      title: score.user,
+      score: score.score,
+    });
+  });
+
+  if (trenches.scores.length === 0) {
+    document.getElementById('students-list').innerHTML = `
+      <p class="inner-text">No Scores yet.</p>
+    `;
+  }
+};
+
+
+document.getElementById('students-list').innerHTML = `
+  <p class="inner-text">No Scores Yet.</p>
+`;
+
+document.getElementById('add-student-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  await studentListener(trenches);
+});
+
+document.getElementById('refresh-score').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await refreshButtonEventListener(trenches);
 });
